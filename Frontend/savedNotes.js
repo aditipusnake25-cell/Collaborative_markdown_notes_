@@ -22,9 +22,9 @@ async function loadNotes() {
     if (!notesList) return;
 
     notesList.textContent = "Loading notes...";
-
+    const API_URL = "https://collaborative-markdown-notes.vercel.app/index.html"
     try {
-        const response = await fetch("/api/notes");
+        const response = await fetch(`${API_URL}/api/notes`);
         const notes = await response.json();
 
         if (!response.ok) {
