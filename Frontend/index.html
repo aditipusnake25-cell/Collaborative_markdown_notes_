@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Notes - Collaborative Markdown Notes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Collaborative Markdown Notes</h1>
+         <section id="notes-section">
+            <button type="button" id="viewBtn" onclick="window.location.href='savedNotes.html'">View Notes</button>
+        </section>
+    </header>
+
+    <main>
+        <section id="note-form">
+            <h2>Create a Note</h2>
+
+            <form id="notesForm">
+                <label for="name">Your Name:</label><br>
+                <input type="text" id="name" name="name" required placeholder="Enter your name.."><br><br>
+
+                <label for="title">Note Title:</label><br>
+                <input type="text" id="title" name="title" required placeholder="Enter note title.."><br><br>
+
+                <label for="description">Note Content:</label><br>
+                <textarea id="description" name="description"
+    placeholder="Enter description.."></textarea><br><br>
+
+                <button type="submit" id="saveBtn">Save Note</button>
+                <button type="button" id="cancelBtn">Cancel</button>
+            </form>
+        </section>
+
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
