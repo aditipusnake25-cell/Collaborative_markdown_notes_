@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +10,7 @@
 <body>
     <header>
         <h1>Collaborative Markdown Notes</h1>
-         <section id="notes-section">
+        <section id="notes-section">
             <button type="button" id="viewBtn" onclick="window.location.href='savedNotes.html'">View Notes</button>
         </section>
     </header>
@@ -28,16 +27,17 @@
                 <input type="text" id="title" name="title" required placeholder="Enter note title.."><br><br>
 
                 <label for="description">Note Content:</label><br>
-                <textarea id="description" name="description"
-    placeholder="Enter description.."></textarea><br><br>
+                <textarea id="description" name="description" placeholder="Enter description.."></textarea><br><br>
 
                 <button type="submit" id="saveBtn">Save Note</button>
                 <button type="button" id="cancelBtn">Cancel</button>
             </form>
         </section>
-
-
     </main>
+
+    <footer>
+        <p>&copy; Collaborative Markdown Notes. All rights reserved.</p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <script src="script.js"></script>

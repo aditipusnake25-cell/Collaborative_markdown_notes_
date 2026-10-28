@@ -16,7 +16,7 @@ app.use(express.json())
 
 app.use(express.static(path.resolve(__dirname, "../Frontend")))
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 6000
 
 app.use("/api", router)
 

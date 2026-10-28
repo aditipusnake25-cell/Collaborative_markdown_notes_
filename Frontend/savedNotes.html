@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,37 +9,62 @@
 </head>
 <body>
     <header>
-        <h1>Collaborative Markdown Notes</h1>
+        <div class="header-container">
+            <h1>Collaborative Markdown Notes</h1>
+            <nav>
+                <section id="notes-section">
+                    <button type="button" onclick="window.location.href='index.html'">Add New Note</button>
+                </section>
+            </nav>
+        </div>
     </header>
 
     <main>
         <section id="notes-section">
-            <h2>Saved Notes</h2>
+            <header class="section-header">
+                <h2>Saved Notes</h2>
+            </header>
 
-            <button type="button" id="refreshBtn">Refresh Notes</button>
-            <button type="button" onclick="window.location.href='index.html'">Add New Note</button>
+            <div class="action-bar">
+                <button type="button" id="refreshBtn">Refresh Notes</button>
+                <button type="button" onclick="window.location.href='index.html'">Add New Note</button>
+            </div>
 
             <div id="notesList"></div>
         </section>
 
         <section id="edit-section" hidden>
-            <h2>Update Note</h2>
+            <header class="section-header">
+                <h2>Update Note</h2>
+            </header>
 
             <form id="editForm">
-                <label for="editName">Your Name:</label><br>
-                <input type="text" id="editName" required><br><br>
+                <div class="form-group">
+                    <label for="editName">Your Name:</label>
+                    <input type="text" id="editName" required>
+                </div>
 
-                <label for="editTitle">Note Title:</label><br>
-                <input type="text" id="editTitle" required><br><br>
+                <div class="form-group">
+                    <label for="editTitle">Note Title:</label>
+                    <input type="text" id="editTitle" required>
+                </div>
 
-                <label for="editDescription">Note Content:</label><br>
-                <textarea id="editDescription" required></textarea><br><br>
+                <div class="form-group">
+                    <label for="editDescription">Note Content:</label>
+                    <textarea id="editDescription" required></textarea>
+                </div>
 
-                <button type="submit" id="updateBtn">Update Note</button>
-                <button type="button" id="cancelEditBtn">Cancel</button>
+                <div class="form-actions">
+                    <button type="submit" id="updateBtn">Update Note</button>
+                    <button type="button" id="cancelEditBtn">Cancel</button>
+                </div>
             </form>
         </section>
     </main>
+
+    <footer>
+        <p>&copy; Collaborative Markdown Notes. All rights reserved.</p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <script src="savedNotes.js"></script>
