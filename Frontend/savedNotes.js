@@ -1,3 +1,6 @@
+
+const API_URL = "https://collaborative-markdown-notes.onrender.com";
+
 const notesList = document.getElementById("notesList");
 const refreshBtn = document.getElementById("refreshBtn");
 const editSection = document.getElementById("edit-section");
@@ -11,6 +14,41 @@ const cancelEditBtn = document.getElementById("cancelEditBtn");
 let editEditor = null;
 let editingId = null;
 
+async function apiRequest(url, options = {}) {
+    let response;
+
+    try {
+        response = await fetch(url, options);
+    } catch {
+        throw new Error(
+            "Cannot connect to the server. Check the backend URL, internet, and CORS settings."
+        );
+    }
+
+    const text = await response.text();
+    let result = {};
+
+    if (text) {
+        try {
+            result = JSON.parse(text);
+        } catch {
+            throw new Error(
+                `Invalid server response (HTTP ${response.status}).`
+            );
+        }
+    }
+
+    if (!response.ok) {
+        throw new Error(
+            result.message ||
+            result.error ||
+            `Request failed with status ${response.status}.`
+        );
+    }
+
+    return result;
+}
+
 if (editDescription) {
     editEditor = new SimpleMDE({
         element: editDescription,
@@ -22,14 +60,9 @@ async function loadNotes() {
     if (!notesList) return;
 
     notesList.textContent = "Loading notes...";
-    const API_URL = "https://collaborative-markdown-notes.vercel.app"
-    try {
-        const response = await fetch(`${API_URL}/api/notes`);
-        const notes = await response.json();
 
-        if (!response.ok) {
-            throw new Error(notes.message || "Failed to load notes.");
-        }
+    try {
+        const notes = await apiRequest(`${API_URL}/api/notes`);
 
         notesList.innerHTML = "";
 
@@ -38,19 +71,19 @@ async function loadNotes() {
             return;
         }
 
-        notes.forEach(note => {
+        notes.forEach((note) => {
             const card = document.createElement("div");
             card.className = "note-card";
 
             const title = document.createElement("h3");
-            title.textContent = note.title;
+            title.textContent = note.title || "";
 
             const author = document.createElement("p");
-            author.textContent = "Added by: " + note.name;
+            author.textContent = "Added by: " + (note.name || "");
 
             const content = document.createElement("div");
             content.className = "note-content";
-            content.textContent = note.description;
+            content.textContent = note.description || "";
 
             const editBtn = document.createElement("button");
             editBtn.type = "button";
@@ -58,7 +91,15 @@ async function loadNotes() {
             editBtn.className = "edit-btn";
 
             editBtn.addEventListener("click", () => {
-                if (!editSection || !editEditor) return;
+                if (
+                    !editSection ||
+                    !editEditor ||
+                    !editForm ||
+                    !editName ||
+                    !editTitle
+                ) {
+                    return;
+                }
 
                 editingId = note._id;
                 editName.value = note.name || "";
@@ -80,30 +121,30 @@ async function loadNotes() {
                     return;
                 }
 
+                deleteBtn.disabled = true;
+
                 try {
-                    const response = await fetch(
-                        `/api/notes/${note._id}`,
+                    await apiRequest(
+                        `${API_URL}/api/notes/${encodeURIComponent(note._id)}`,
                         { method: "DELETE" }
                     );
 
-                    const result = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(result.message || "Failed to delete note.");
-                    }
-
                     if (editingId === note._id) {
-                        editForm.reset();
-                        editEditor.value("");
+                        editForm?.reset();
+                        editEditor?.value("");
                         editingId = null;
-                        editSection.hidden = true;
+
+                        if (editSection) {
+                            editSection.hidden = true;
+                        }
                     }
 
                     alert("Note deleted successfully!");
                     await loadNotes();
                 } catch (error) {
-                    console.error(error);
+                    console.error("Error deleting note:", error);
                     alert(error.message);
+                    deleteBtn.disabled = false;
                 }
             });
 
@@ -112,7 +153,7 @@ async function loadNotes() {
         });
     } catch (error) {
         console.error("Error loading notes:", error);
-        notesList.textContent = "Failed to load notes. Check your server.";
+        notesList.textContent = error.message;
     }
 }
 
@@ -134,45 +175,50 @@ if (editForm) {
         }
 
         updateBtn.disabled = true;
+        updateBtn.textContent = "Updating...";
 
         try {
-            const response = await fetch(`/api/notes/${editingId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(note)
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.message || "Failed to update note.");
-            }
+            await apiRequest(
+                `${API_URL}/api/notes/${encodeURIComponent(editingId)}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(note)
+                }
+            );
 
             alert("Note updated successfully!");
 
             editForm.reset();
             editEditor.value("");
             editingId = null;
-            editSection.hidden = true;
+
+            if (editSection) {
+                editSection.hidden = true;
+            }
 
             await loadNotes();
         } catch (error) {
-            console.error(error);
+            console.error("Error updating note:", error);
             alert(error.message);
         } finally {
             updateBtn.disabled = false;
+            updateBtn.textContent = "Update Note";
         }
     });
 }
 
 if (cancelEditBtn) {
     cancelEditBtn.addEventListener("click", () => {
-        editForm.reset();
-        editEditor.value("");
+        editForm?.reset();
+        editEditor?.value("");
         editingId = null;
-        editSection.hidden = true;
+
+        if (editSection) {
+            editSection.hidden = true;
+        }
     });
 }
 

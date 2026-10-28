@@ -1,4 +1,6 @@
 
+const API_URL = "https://collaborative-markdown-notes.onrender.com";
+
 const form = document.getElementById("notesForm");
 const nameInput = document.getElementById("name");
 const titleInput = document.getElementById("title");
@@ -6,7 +8,49 @@ const description = document.getElementById("description");
 const saveBtn = document.getElementById("saveBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 
-if (form && nameInput && titleInput && description && saveBtn && cancelBtn) {
+async function apiRequest(url, options = {}) {
+    let response;
+
+    try {
+        response = await fetch(url, options);
+    } catch (error) {
+        throw new Error(
+            "Cannot connect to the server. Check your internet, backend URL, and server status."
+        );
+    }
+
+    const text = await response.text();
+    let result = {};
+
+    if (text) {
+        try {
+            result = JSON.parse(text);
+        } catch {
+            throw new Error(
+                `Server returned an invalid response (HTTP ${response.status}).`
+            );
+        }
+    }
+
+    if (!response.ok) {
+        throw new Error(
+            result.message ||
+            result.error ||
+            `Request failed with status ${response.status}.`
+        );
+    }
+
+    return result;
+}
+
+if (
+    form &&
+    nameInput &&
+    titleInput &&
+    description &&
+    saveBtn &&
+    cancelBtn
+) {
     const editor = new SimpleMDE({
         element: description,
         spellChecker: false
@@ -30,7 +74,7 @@ if (form && nameInput && titleInput && description && saveBtn && cancelBtn) {
         saveBtn.textContent = "Saving...";
 
         try {
-            const response = await fetch("/api/notes", {
+            await apiRequest(`${API_URL}/api/notes`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -38,20 +82,13 @@ if (form && nameInput && titleInput && description && saveBtn && cancelBtn) {
                 body: JSON.stringify(note)
             });
 
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.message || "Failed to save note.");
-            }
-
             alert("Note saved successfully!");
 
             form.reset();
             editor.value("");
-
         } catch (error) {
             console.error("Error saving note:", error);
-            alert("Unable to save note. Check your backend server and MongoDB connection.");
+            alert(error.message);
         } finally {
             saveBtn.disabled = false;
             saveBtn.textContent = "Save Note";
