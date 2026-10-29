@@ -812,3 +812,100 @@ footer p {
     #notesList,
     .notes-list { grid-template-columns: 1fr; }
 }
+/* ==========================================================================
+   EDIT & DELETE BUTTONS  (matches .edit-btn / .delete-btn from savedNotes.js)
+   ========================================================================== */
+
+/* Text goes on top, the two buttons sit side by side underneath */
+.note-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    align-content: start;
+}
+
+.note-card > h3,
+.note-card > p,
+.note-card > .note-content {
+    grid-column: 1 / -1;
+}
+
+.edit-btn,
+.delete-btn {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 0.6rem;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1;
+    border: 1.5px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s var(--spring), background 0.25s, color 0.25s,
+                border-color 0.25s, box-shadow 0.25s;
+}
+
+/* Edit: solid sky-blue gradient with a shine on hover */
+.edit-btn {
+    color: var(--white);
+    background: linear-gradient(135deg, var(--sky-500), var(--sky-600));
+    box-shadow: 0 6px 16px rgba(14, 165, 233, 0.35);
+}
+
+.edit-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s var(--ease);
+}
+
+.edit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(14, 165, 233, 0.5);
+}
+
+.edit-btn:hover::after {
+    left: 130%;
+}
+
+/* Delete: white with a red outline, fills red on hover */
+.delete-btn {
+    color: var(--danger);
+    background: var(--white);
+    border-color: #fbb6c3;
+}
+
+.delete-btn:hover {
+    color: var(--white);
+    background: linear-gradient(135deg, #f43f5e, var(--danger));
+    border-color: transparent;
+    box-shadow: 0 10px 22px rgba(225, 29, 72, 0.40);
+    transform: translateY(-3px);
+}
+
+.edit-btn:active,
+.delete-btn:active {
+    transform: scale(0.95);
+}
+
+/* While a delete request is running (your JS sets disabled) */
+.delete-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.edit-btn:focus-visible { outline-color: var(--sky-400); }
+.delete-btn:focus-visible { outline-color: #fb7185; }
