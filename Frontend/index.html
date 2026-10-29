@@ -4,40 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Notes - Collaborative Markdown Notes</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Collaborative Markdown Notes</h1>
-        <section id="notes-section">
-            <button type="button" id="viewBtn" onclick="window.location.href='savedNotes.html'">View Notes</button>
-        </section>
-    </header>
 
-    <main>
-        <section id="note-form">
-            <h2>Create a Note</h2>
+    <main class="container">
+        <div class="page-top">
+            <div>
+                <h1>Collaborative Markdown Notes</h1>
+                <p class="subtitle">Create, organize, and manage your notes in one place.</p>
+            </div>
+
+            <button
+                type="button"
+                id="viewBtn"
+                onclick="window.location.href='savedNotes.html'">
+                View Notes
+            </button>
+        </div>
+
+        <section id="note-form" class="card">
+            <div class="section-header">
+                <h2>Create a Note</h2>
+                <p>Write down your ideas and save them for later.</p>
+            </div>
 
             <form id="notesForm">
-                <label for="name">Your Name:</label><br>
-                <input type="text" id="name" name="name" required placeholder="Enter your name.."><br><br>
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        placeholder="Enter your name">
+                </div>
 
-                <label for="title">Note Title:</label><br>
-                <input type="text" id="title" name="title" required placeholder="Enter note title.."><br><br>
+                <div class="form-group">
+                    <label for="title">Note Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        required
+                        placeholder="Enter note title">
+                </div>
 
-                <label for="description">Note Content:</label><br>
-                <textarea id="description" name="description" placeholder="Enter description.."></textarea><br><br>
+                <div class="form-group">
+                    <label for="description">Note Content</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Write your note here using Markdown..."></textarea>
+                </div>
 
-                <button type="submit" id="saveBtn">Save Note</button>
-                <button type="button" id="cancelBtn">Cancel</button>
+                <div class="form-actions">
+                    <button type="submit" id="saveBtn">Save Note</button>
+                    <button type="button" id="cancelBtn" class="secondary-btn">
+                        Cancel
+                    </button>
+                </div>
             </form>
         </section>
-    </main>
 
-    <footer>
-        <p>&copy; Collaborative Markdown Notes. All rights reserved.</p>
-    </footer>
+        <footer>
+            <p>&copy; Collaborative Markdown Notes. All rights reserved.</p>
+        </footer>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <script src="script.js"></script>

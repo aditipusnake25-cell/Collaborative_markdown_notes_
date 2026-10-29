@@ -4,67 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saved Notes - Collaborative Markdown Notes</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <h1>Collaborative Markdown Notes</h1>
-            <nav>
-                <section id="notes-section">
-                    <button type="button" onclick="window.location.href='index.html'">Add New Note</button>
-                </section>
-            </nav>
-        </div>
-    </header>
 
-    <main>
-        <section id="notes-section">
-            <header class="section-header">
-                <h2>Saved Notes</h2>
-            </header>
-
-            <div class="action-bar">
-                <button type="button" id="refreshBtn">Refresh Notes</button>
-                <button type="button" onclick="window.location.href='index.html'">Add New Note</button>
+    <main class="container">
+        <div class="page-top">
+            <div>
+                <h1>Collaborative Markdown Notes</h1>
+                <p class="subtitle">All your saved notes, organized in one place.</p>
             </div>
 
-            <div id="notesList"></div>
+            <button
+                type="button"
+                onclick="window.location.href='index.html'">
+                + Add New Note
+            </button>
+        </div>
+
+        <section id="notes-section" class="card">
+            <div class="section-header">
+                <div>
+                    <h2>Saved Notes</h2>
+                    <p>View, edit, and manage your notes.</p>
+                </div>
+
+                <button type="button" id="refreshBtn" class="secondary-btn">
+                    Refresh Notes
+                </button>
+            </div>
+
+            <div id="notesList" class="notes-list"></div>
         </section>
 
-        <section id="edit-section" hidden>
-            <header class="section-header">
+        <section id="edit-section" class="card" hidden>
+            <div class="section-header">
                 <h2>Update Note</h2>
-            </header>
+                <p>Make changes to your existing note.</p>
+            </div>
 
             <form id="editForm">
                 <div class="form-group">
-                    <label for="editName">Your Name:</label>
-                    <input type="text" id="editName" required>
+                    <label for="editName">Your Name</label>
+                    <input
+                        type="text"
+                        id="editName"
+                        required
+                        placeholder="Enter your name">
                 </div>
 
                 <div class="form-group">
-                    <label for="editTitle">Note Title:</label>
-                    <input type="text" id="editTitle" required>
+                    <label for="editTitle">Note Title</label>
+                    <input
+                        type="text"
+                        id="editTitle"
+                        required
+                        placeholder="Enter note title">
                 </div>
 
                 <div class="form-group">
-                    <label for="editDescription">Note Content:</label>
-                    <textarea id="editDescription" required></textarea>
+                    <label for="editDescription">Note Content</label>
+                    <textarea
+                        id="editDescription"
+                        required
+                        placeholder="Update your note content"></textarea>
                 </div>
 
                 <div class="form-actions">
                     <button type="submit" id="updateBtn">Update Note</button>
-                    <button type="button" id="cancelEditBtn">Cancel</button>
+                    <button
+                        type="button"
+                        id="cancelEditBtn"
+                        class="secondary-btn">
+                        Cancel
+                    </button>
                 </div>
             </form>
         </section>
-    </main>
 
-    <footer>
-        <p>&copy; Collaborative Markdown Notes. All rights reserved.</p>
-    </footer>
+        <footer>
+            <p>&copy; Collaborative Markdown Notes. All rights reserved.</p>
+        </footer>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <script src="savedNotes.js"></script>

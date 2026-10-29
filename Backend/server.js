@@ -4,6 +4,7 @@ import express from 'express'
 import path from 'path'
 import { fileURLToPath } from "url"
 import router from "./routes/noteRoutes.js"
+import cors from "cors"
 
 const app = express()
 
@@ -21,6 +22,14 @@ const PORT = process.env.PORT || 6000
 app.use("/api", router)
 
 
+app.use(cors({
+    origin: [
+        "https://collaborative-markdown-notes.vercel.app",
+        "https://collaborative-markdown-notes.onrender.com"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 const startServer = async () => {
     try {
