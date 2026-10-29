@@ -25,7 +25,8 @@ app.use("/api", router)
 app.use(cors({
     origin: [
         "https://collaborative-markdown-notes.vercel.app",
-        "https://collaborative-markdown-notes.onrender.com"
+        "https://collaborative-markdown-notes.onrender.com",
+         "https://collaborative-markdown-notes-frontend.onrender.com"
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
