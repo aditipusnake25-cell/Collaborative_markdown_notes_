@@ -1,47 +1,53 @@
-import dotenv from "dotenv"
-import connectDB from "./config/db.js"
-import express from 'express'
-import path from 'path'
-import { fileURLToPath } from "url"
-import router from "./routes/noteRoutes.js"
-import cors from "cors"
+import dotenv from "dotenv";
+dotenv.config();
 
-const app = express()
+import connectDB from "./config/db.js";
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import router from "./routes/noteRoutes.js";
+import cors from "cors";
 
-dotenv.config()
+const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename)
+const __dirname = path.dirname(__filename);
 
-app.use(express.json())
+// CORS configuration — must come before API routes
+app.use(
+    cors({
+        origin: [
+            "https://collaborative-markdown-notes.vercel.app",
+            "https://collaborative-markdown-notes.onrender.com",
+            "https://collaborative-markdown-notes-frontend.onrender.com"
+        ],
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"]
+    })
+);
 
-app.use(express.static(path.resolve(__dirname, "../Frontend")))
+// Middleware
+app.use(express.json());
 
-const PORT = process.env.PORT || 6000
+// Serve frontend files
+app.use(express.static(path.resolve(__dirname, "../Frontend")));
 
-app.use("/api", router)
+// API routes
+app.use("/api", router);
 
-
-app.use(cors({
-    origin: [
-        "https://collaborative-markdown-notes.vercel.app",
-        "https://collaborative-markdown-notes.onrender.com",
-         "https://collaborative-markdown-notes-frontend.onrender.com"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-}));
+// Server
+const PORT = process.env.PORT || 6000;
 
 const startServer = async () => {
     try {
-        await connectDB()
+        await connectDB();
+
         app.listen(PORT, () => {
-            console.log(`server is running on port ${PORT}`);
-        })
+            console.log(`Server is running on port ${PORT}`);
+        });
     } catch (error) {
-        console.log("Connection error: ",error);
-
+        console.error("Connection error:", error);
     }
-}
+};
 
-startServer()
+startServer();
